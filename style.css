@@ -1,3 +1,7 @@
 .lesson_2_myitalic {
     font-style: italic;
 }
+
+img {
+    width: 128px;
+}
