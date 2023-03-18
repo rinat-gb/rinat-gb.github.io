@@ -5,3 +5,7 @@
 .lesson_2_myimg {
     width: 128px;
 }
+
+.red_box {
+    border: 3px solid red;
+}
