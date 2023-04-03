@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Операционные системы и виртуализация (Linux) (семинары) Семинар №6</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Урок 6. Запуск стека для веб-приложения</h1>
+    <div class="red_box">
+        <h3>Задание №1</h3>
+        <p>Установить Nginx и настроить его на работу с PHP-FPM.</p>
+    </div>
+    <p>Устанавливаем Nginx при помощи команды</p>
+    <p><code>sudo apt install nginx</code></p>
+    <p>Проверяем запустился ли <code>nginx</code>:</p>
+    <p><code>systemctl status nginx</code></p>
+    <img src="img/linux_seminar_06_task_01_1.png" alt="первый скриншот задания №1">
+    <p>Запустился, проверяем слушает ли он порт 80 при помощи команды</p>
+    <img src="img/linux_seminar_06_task_01_2.png" alt="второй скриншот задания №1">
+    <p>Слушает.<br><br>
+        Теперь устанавливаем PHP и php-fpm при помощи команды</p>
+    <p><code>sudo apt install php php-fpm</code></p>
+    <p>Смотрим в файле</p>
+    <p><code>/etc/php/8.1/fpm/pool.d/www.conf</code></p>
+    <p>какой сокет php-fpm собирается использовать для соединения с веб-сервером:</p>
+    <img src="img/linux_seminar_06_task_01_3.png" alt="третий скриншот задания №1">
+    <p>Редактируем файл</p>
+    <p><code>/etc/nginx/sites-available/default</code></p>
+    <p>раскомментировав location, относящийся к php и прописав коррректный путь на сокет для php-fpm:</p>
+    <img src="img/linux_seminar_06_task_01_4.png" alt="четвёртый скриншот задания №1">
+    <p>Проверяем конфигурацию nginx при помощи команды</p>
+    <p><code>sudo nginx -t</code></p>
+    <p>Нам пишется что всё Ok, поэтому перечитываем конфигурацию для nginx при помощи команды</p>
+    <p><code>sudo sysinstall reload nginx</code></p>
+    <p>Создаём проверочный файл</p>
+    <p><code>/var/www/html/info.php</code></p>
+    <p>при помощи команды</p>
+    <img src="img/linux_seminar_06_task_01_5.png" alt="пятый скриншот задания №1">
+    <p>и пробуем зайти на локальный сайт по URL <code>http://localhost/info.php</code>:</p>
+    <img src="img/linux_seminar_06_task_01_6.png" alt="шестой скриншот задания №1">
+    <p>Всё работает!</p>
+
+    <div class="red_box">
+        <h3>Задание №2</h3>
+        <p>Установить Apache. Настроить обработку PHP. Добиться одновременной работы с Nginx.</p>
+    </div>
+    <p>Когда мы устанавливали php в первом задании заодно <strong>сам</strong> установился и apache как зависимость, так
+        что дополнительно его устанавливать не надо, он уже имеется.</p>
+    <p>Единственное -- он не запустился по причине того, что не смог подключиться к порту 80, который уже слушает nginx.
+        Поэтому необходимо изменить номер порта в файле</p>
+    <p><code>/etc/apache2/ports.conf </code></p>
+    <p>и в файле</p>
+    <p><code>/etc/apache2/sites-available/000-default.conf</code></p>
+    <p>с 80 на какой-нибудь другой номер, чтобы номера портов были не такие, как у уже установленного <code>nginx</code>
+        и больше не было конфликта. Установим номер порта 8080 в обоих файлах:</p>
+    <img src="img/linux_seminar_06_task_02_1.png" alt="первый скриншот задания №2">
+    <br>
+    <img src="img/linux_seminar_06_task_02_2.png" alt="второй скриншот задания №2">
+    <p>и после этого запустим apache при помощи команды</p>
+    <p><code>sudo sysinstall restart apache2</code></p>
+    <p>Теперь на порту 80 (порт по умолчанию) отвечает nginx:</p>
+    <img src="img/linux_seminar_06_task_02_3.png" alt="третий скриншот задания №2">
+    <p>а на порту 8080 отвечает apache:</p>
+    <img src="img/linux_seminar_06_task_02_4.png" alt="четвёртый скриншот задания №2">
+    <p>PHP дополнительно настраивать не пришлось, все установки по умолчанию заработали для apache сразу же:</p>
+    <img src="img/linux_seminar_06_task_02_5.png" alt="пятый скриншот задания №2">
+    <br>
+    <br>
+
+    <div class="red_box">
+        <h3>Задание №3</h3>
+        <p>Настроить схему обратного прокси для Nginx (динамика - на Apache).</p>
+    </div>
+    <p>Для того чтобы все запросы, поступающие на порт 80, который слушает nginx, перенаправлялись на apache в файле</p>
+    <code>/etc/nginx/sites-available</code>
+    <p>надо отредактировать стейтмент location. А чтобы <strong>не все</strong> запросы
+        перенаправлялись необходимо <strong>добавить</strong> ещё один стейтмент location, в котором перечислить те
+        файлы, обращение к которым будет обработано самим nginx:</p>
+    <img src="img/linux_seminar_06_task_03_1.png" alt="первый скриншот задания №3">
+    <p>После этого проверяем конфигурацию nginx при помощи команды</p>
+    <p><code>sudo nginx -t</code></p>
+    <p>Нам пишется что всё Ok, поэтому перечитываем конфигурацию для nginx при помощи команды</p>
+    <p><code>sudo sysinstall reload nginx</code></p>
+    <p>и всё, обратный прокси настроен (не знаю какой скриншот тут приложить чтобы доказать это)</p>
+
+    <div class="red_box">
+        <h3>Задание №4</h3>
+        <p>Установить MySQL. Создать новую базу данных и таблицу в ней.</p>
+    </div>
+    <p>Устанавливаем MySQL при помощи команды</p>
+    <p><code>sudo apt install mysql-server</code></p>
+    <p>Проверяем запустился ли MySQL при помощи команды</p>
+    <p><code>systemctl status mysql</code></p>
+    <img src="img/linux_seminar_06_task_04_1.png" alt="первый скриншот задания №4">
+    <p>Заходим в mysql как root и меняем ему пароль (устанавливаем, по умолчанию root без пароля)
+        '12345678' с использованием метода аутентификации <code>mysql_native_password</code>:</p>
+    <img src="img/linux_seminar_06_task_04_2.png" alt="второй скриншот задания №4">
+    <p>Так как работать от пользователя root это дурной тон, то создаём отдельного пользователя для MySQL,
+        войдя предварительно как root и используя установленный выше пароль '12345678'. Дадим этому пользователю
+        пароль '87654321' и все возможные права:</p>
+    <img src="img/linux_seminar_06_task_04_3.png" alt="третий скриншот задания №4">
+    <p>Зайдём как пользователь rhs, создадим базу данных foobar, в ней таблицу barfoo с единственным полем типа INT,
+       вставим в эту таблицу 5 произвольных значений, выведем их при помощи команды SELECT, затем удалим таблицу,
+       удалим саму только что созданную базху данных и выйдем из mysql:</p>
+    <img src="img/linux_seminar_06_task_04_4.png" alt="четвёртый скриншот задания №4">
+</body>
+
+</html>
