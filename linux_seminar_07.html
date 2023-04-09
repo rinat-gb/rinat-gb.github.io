@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Операционные системы и виртуализация (Linux) (семинары) Семинар №7</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Урок 7. Запуск веб-приложения из контейнеров</h1>
+    <div class="red_box">
+        <h3>Задание №1</h3>
+        <p>Установить в виртуальную машину или VDS Docker, настроить набор контейнеров через docker compose по
+            инструкции по ссылке: <a
+                href="https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose-ru">тут</a>.
+            Часть с настройкой certbot и HTTPS опустить, если у вас нет настоящего домена и белого IP.</p>
+    </div>
+    <p>Устанавливаем <code>docker-compose</code> при помощи команды</p>
+    <p><code>sudo apt install docker-compose</code></p>
+    <p>(<code>docker.io</code> указывать в параметрах <code>'apt install'</code> не обязательно, он будет автоматически
+        установлен как зависимость для <code>docker-compose</code>, но можно и указать, хуже не будет)</p>
+    <p><code>sudo apt install docker.io docker-compose</code></p>
+    <p>Добавляем себя в группу <code>docker</code> чтобы не приходилось постоянно делать <code>sudo</code>:</p>
+    <p><code>sudo usermod -aG docker rhs</code></p>
+    <p>и чтобы не перегружать/перелогинивать систему просто обновляем группу <code>docker</code>:</p>
+    <p><code>newgrp docker</code></p>
+    <p>Прверяем запустился ли <code>docker</code>:</p>
+    <img src="img/linux_seminar_07_task_01_1.png" alt="первый скриншот задания №1">
+    <p>Всё нормально, запустился. Далее делаем всё по инструкции из ссылки выше и при помощи <code>docker-compose</code>
+        устанавливаем контейнеры с <code>mysql</code>, <code>wordpress</code> и <code>nginx</code>:</p>
+    <p><code>docker-compose up -d</code></p>
+    <p>Проверяем запустились все три контейнера:</p>
+    <img src="img/linux_seminar_07_task_01_2.png" alt="второй скриншот задания №1">
+    <p>Заходим на <code>http://localhost</code></p> и видим что <code>wordpress</code> у нас запустился и прекрасно
+    работает:
+    <img src="img/linux_seminar_07_task_01_3.png" alt="третий скриншот задания №1">
+
+    <div class="red_box">
+        <h3>Задание №2</h3>
+        <p> Запустить два контейнера, связанные одной сетью (используя документацию). Первый контейнер БД (например,
+            образ mariadb:10.8), второй контейнер — phpmyadmin. Получить доступ к БД в первом контейнере через второй
+            контейнер (веб-интерфейс phpmyadmin).</p>
+    </div>
+    <p><code>mysql</code> у нас уже установлен в предыдущем задании, поэтому будем установливать только
+        <code>phpmyadmin</code>:</p>
+    <p>Для начала останавливаем ненужные контейнеры из предыдущего задания (<code>webserver</code> и
+        <code>wordpress</code>), оставляя только базу данных:</p>
+    <p><code>docker stop webserver</code></p>
+    <p><code>docker stop wordpress</code></p>
+    <p>Теперь устанавливаем, одновременно запуская, <code>phpmyadmin</code> как демон с пробросом хостового порта 80 на порт 80
+        контейнера</p>
+    <p><code>docker run -d -p 80:80 phpadminwebserver</code></p>
+    <p>Убеждаемся что <code>phpmyadmin</code> работает:</p>
+    <img src="img/linux_seminar_07_task_02_1.png" alt="первый скриншот задания №2">
+</body>
+
+</html>
