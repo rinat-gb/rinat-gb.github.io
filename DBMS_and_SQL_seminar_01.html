@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Базы данных и SQL (семинары) Семинар №1</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <p>Так как у меня <a href="https://mariadb.org/">MariaDB</a>, а не <a href="https://www.mysql.com/">MySQL</a>, то
+    я не могу использовать <a href="https://www.mysql.com/products/workbench/">MySQL Workbench</a> по причине того что
+    он
+    заточен конкретно под <code>MySQL</code> и некоторые вещи в <code>MariaDB</code> он не знает или не умеет. Я
+    пробовал,
+    но хотя <code>MariaDB</code> и является форком <code>MySQL</code> и на уровне DDL, DQL и DML они полностью
+    совместимы,
+    однако некоторые внутренние структуры, которые похоже иногда и использует <code>MySQL Workbench</code>, несовместимы
+    и Workbench выдаёт ошибку. А <a href="https://dbeaver.io/">DBeaver</a> поддерживает <code>MariaDB</code> нативно.
+    Поэтому я использую <code>DBeaver</code> и все скриншоты будут из него.
+  </p>
+
+  <h1>Урок 1. Установка СУБД, подключение к БД, просмотр и создание таблиц
+  </h1>
+  <div class="red_box">
+    <h3>Задание №1</h3>
+    <p>Создайте таблицу с мобильными телефонами, используя графический интерфейс. Необходимые поля таблицы: product_name
+      (название товара), manufacturer (производитель), product_count (количество), price (цена). Заполните БД
+      произвольными данными.</p>
+  </div>
+  <p>Таблица <code>products</code> которую я создал:</p>
+  <div class="black_box">
+    <p><img src="img/DBMS_and_SQL_seminar_01_table_products.png" alt="первый скриншот задания №1"></p>
+  </div>
+  <p>Данные, которыми я эту таблицу заполнил (цены и названия не придумывал, взял с сайта <a
+      href="https://www.svyaznoy.ru/">Связной</a>:</p>
+  <div class="black_box">
+    <p><img src="img/DBMS_and_SQL_seminar_01_table_products_data.png" alt="второй скриншот задания №1"></p>
+  </div>
+  <br>
+
+  <div class="red_box">
+    <h3>Задание №2</h3>
+    <p>Напишите SELECT-запрос, который выводит название товара, производителя и цену для товаров, количество которых
+      превышает 2</p>
+  </div>
+
+  <p>Запрос:<p>
+  <div class="black_box">
+    <pre>
+<strong>SELECT</strong> product_name, manufacturer, price
+  <strong>FROM</strong> products
+ <strong>WHERE</strong> product_count > 2;
+    </pre>
+  </div>
+  <p>Ответ:</p>
+  <div class="black_box">
+    <pre>
+product_name|manufacturer|price|
+------------+------------+-----+
+Galaxy A32  |Samsung     |15195|
+Galaxy M12  |Samsung     |11590|
+HONOR X6    |Honor       | 9990|
+Nokia X20   |Nokia       |25595|
+    </pre>
+  </div>
+  <br>
+
+  <div class="red_box">
+    <h3>Задание №3</h3>
+    <p>Выведите SELECT-запросом весь ассортимент товаров марки “Samsung”</p>
+  </div>
+
+  <p>Запрос:<p>
+  <div class="black_box">
+    <pre>
+<strong>SELECT</strong> *
+  <strong>FROM</strong> products
+ <strong>WHERE</strong> manufacturer = 'Samsung';
+ </pre>
+  </div>
+  <p>Ответ:</p>
+  <div class="black_box">
+    <pre>
+product_name|manufacturer|product_count|price|
+------------+------------+-------------+-----+
+Galaxy A32  |Samsung     |            4|15195|
+Galaxy M12  |Samsung     |            3|11590|
+    </pre>
+  </div>
+</body>
+
+</html>
