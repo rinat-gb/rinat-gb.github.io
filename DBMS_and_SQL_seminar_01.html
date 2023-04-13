@@ -47,7 +47,8 @@
       превышает 2</p>
   </div>
 
-  <p>Запрос:<p>
+  <p>Запрос:
+  <p>
   <div class="black_box">
     <pre>
 <strong>SELECT</strong> product_name, manufacturer, price
@@ -74,7 +75,8 @@ realmi 8i   |realmi      |15990|    </pre>
     <p>Выведите SELECT-запросом весь ассортимент товаров марки “Samsung”</p>
   </div>
 
-  <p>Запрос:<p>
+  <p>Запрос:
+  <p>
   <div class="black_box">
     <pre>
 <strong>SELECT</strong> *
@@ -89,6 +91,120 @@ product_name|manufacturer|product_count|price|
 ------------+------------+-------------+-----+
 Galaxy A32  |Samsung     |            4|15195|
 Galaxy M12  |Samsung     |            3|11590|
+    </pre>
+  </div>
+  <br>
+
+  <div class="red_box">
+    <h3>(*) Задание №4</h3>
+    <p>С помощью SELECT-запроса с оператором LIKE / REGEXP найти:</p>
+  </div>
+  <br>
+
+  <div class="green_box">
+    <div class="lesson_myitalic">
+      <h4>(*) Задание №4.1</h4>
+      <p>Товары, в которых есть упоминание "Iphone"</p>
+    </div>
+  </div>
+  <p>Запрос:
+  <p>
+  <div class="black_box">
+    <pre>
+<strong>SELECT</strong> *
+  <strong>FROM</strong> products
+ <strong>WHERE</strong> (product_name <strong>REGEXP</strong> 'Iphone') <strong>OR</strong> (manufacturer <strong>REGEXP</strong> 'Iphone');
+    </pre>
+  </div>
+  <p>Ответ:</p>
+  <div class="black_box">
+    <pre>
+product_name|manufacturer|product_count|price|
+------------+------------+-------------+-----+
+iPhone X    |Apple       |            3| 7600|
+    </pre>
+  </div>
+  <br>
+
+  <div class="green_box">
+    <div class="lesson_myitalic">
+      <h4>(*) Задание №4.2</h4>
+      <p>Товары, в которых есть упоминание "Samsung"</p>
+    </div>
+  </div>
+  <p>Запрос:
+  <p>
+  <div class="black_box">
+    <pre>
+<strong>SELECT</strong> *
+  <strong>FROM</strong> products
+ <strong>WHERE</strong> (product_name <strong>REGEXP</strong> 'Samsung') <strong>OR</strong> (manufacturer <strong>REGEXP</strong> 'Samsung');
+  </pre>
+  </div>
+  <p>Ответ:</p>
+  <div class="black_box">
+    <pre>
+product_name|manufacturer|product_count|price|
+------------+------------+-------------+-----+
+Galaxy A32  |Samsung     |            4|15195|
+Galaxy M12  |Samsung     |            3|11590|
+    </pre>
+  </div>
+  <br>
+
+  <div class="green_box">
+    <div class="lesson_myitalic">
+      <h4>(*) Задание №4.3</h4>
+      <p>Товары, в названии которых есть ЦИФРЫ</p>
+    </div>
+  </div>
+  <p>Запрос:
+  <p>
+  <div class="black_box">
+    <pre>
+<strong>SELECT</strong> *
+  <strong>FROM</strong> products
+ <strong>WHERE</strong> product_name <strong>REGEXP</strong> '[0-9]';
+  </pre>
+  </div>
+  <p>Ответ:</p>
+  <div class="black_box">
+    <pre>
+product_name     |manufacturer|product_count|price|
+-----------------+------------+-------------+-----+
+Nokia 1.4        |Nokia       |            2| 7195|
+Galaxy A32       |Samsung     |            4|15195|
+Galaxy M12       |Samsung     |            3|11590|
+HONOR X6         |Honor       |            4| 9990|
+Huawei P50 Pocket|Huawei      |            2|79995|
+Nokia X20        |Nokia       |            8|25595|
+HONOR 70         |Honor       |            1|40490|
+realmi 8i        |realmi      |            7|15990|
+    </pre>
+  </div>
+  <br>
+
+  <div class="green_box">
+    <div class="lesson_myitalic">
+      <h4>(*) Задание №4.4</h4>
+      <p>Товары, в названии которых есть ЦИФРА "8"</p>
+    </div>
+  </div>
+  <p>Запрос:
+  <p>
+  <div class="black_box">
+    <pre>
+<strong>SELECT</strong> *
+  <strong>FROM</strong> products
+ <strong>WHERE</strong> product_name <strong>REGEXP</strong> '[8]';
+  </pre>
+  </div>
+  <p>Ответ:</p>
+  <div class="black_box">
+    <pre>
+product_name|manufacturer|product_count|price|
+------------+------------+-------------+-----+
+realmi 8i   |realmi      |            7|15990|
     </pre>
   </div>
 </body>
